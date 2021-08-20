@@ -21,7 +21,8 @@ label {
 
 img,
 input,
-textarea {
+textarea,
+button {
   border-radius: 6px;
 }
 

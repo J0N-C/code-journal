@@ -10,14 +10,39 @@
     crossorigin="anonymous"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
     integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/styles.css">
 </head>
-<body>
+<body class="container">
   <header>
+    <h1 class="head-banner purple-bkg" >Code Journal</h1>
   </header>
   <main>
+    <div class="form" data-view="entry-form">
+      <h2>New Entry</h2>
+      <form class="row right" id="code-form">
+        <div class="column-half img-frame">
+          <img src="images/placeholder-image-square.jpg" alt="placeholder">
+        </div>
+        <div class="column-half">
+          <label for="entry-title">Title</label>
+          <input required name="entry-title" type="text" id="entry-title">
+          <label for="entry-photo">Photo URL</label>
+          <input required name="entry-photo" type="url" id="entry-photo">
+        </div>
+        <div class="column-full">
+          <label for="entry-notes">Notes</label>
+          <textarea required name="entry-notes" id="entry-notes"></textarea>
+        </div>
+        <div>
+          <button form="code-form" name="save" type="submit" class="save-button rounded-border purple-bkg">SAVE</button>
+        </div>
+      </form>
+    </div>
   </main>
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>

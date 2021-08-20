@@ -19,6 +19,9 @@ function submitForm(event) {
   data.nextEntryId++;
   $form.reset();
   data.entries.push(filledForm);
+  document.querySelector('#photo').setAttribute('src', 'images/placeholder-image-square.jpg');
+  var dataJSON = JSON.stringify(data);
+  localStorage.setItem('journal-data', dataJSON);
 }
 
 $form.addEventListener('submit', submitForm);

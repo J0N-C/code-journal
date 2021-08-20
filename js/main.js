@@ -8,7 +8,3 @@ function handleInput(event) {
 }
 
 $photoUrl.addEventListener('input', handleInput);
-document.addEventListener('submit', function (event) {
-  event.preventDefault();
-  $photo.setAttribute('src', 'images/placeholder-image-square.jpg');
-});

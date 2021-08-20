@@ -26,17 +26,17 @@
       <h2>New Entry</h2>
       <form class="row right" id="code-form">
         <div class="column-half img-frame">
-          <img src="images/placeholder-image-square.jpg" alt="placeholder">
+          <img id="photo" src="images/placeholder-image-square.jpg" alt="placeholder">
         </div>
         <div class="column-half">
           <label for="entry-title">Title</label>
-          <input required name="entry-title" type="text" id="entry-title">
+          <input required name="title" type="text" id="title">
           <label for="entry-photo">Photo URL</label>
-          <input required name="entry-photo" type="url" id="entry-photo">
+          <input required name="photo" type="url" id="photolink">
         </div>
         <div class="column-full">
           <label for="entry-notes">Notes</label>
-          <textarea required name="entry-notes" id="entry-notes"></textarea>
+          <textarea required name="notes" id="notes"></textarea>
         </div>
         <div>
           <button form="code-form" name="save" type="submit" class="save-button rounded-border purple-bkg">SAVE</button>

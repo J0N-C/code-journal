@@ -21,8 +21,29 @@
   <header>
     <h1 class="head-banner purple-bkg" >Code Journal</h1>
   </header>
-  <main>
-    <div class="form" data-view="entry-form">
+  <main class="form">
+    <div class="row space-bt">
+      <h2>Entries</h2>
+          <button name="new" class="save-button rounded-border purple-bkg">NEW</button>
+    </div>
+    <div id="viewentries" data-view="entries">
+      <ul>
+        <li>
+          <div class="row">
+            <div class="column-half img-frame">
+              <img id="photo" src="images/nelson.png" alt="placeholder">
+            </div>
+            <div class="column-half">
+                <h3>Test Title</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil dolorem excepturi aut!</p>
+            </div>
+
+          </div>
+        </li>
+      </ul>
+    </div>
+    <!--
+    <div data-view="entry-form">
       <h2>New Entry</h2>
       <form class="row right" id="code-form">
         <div class="column-half img-frame">
@@ -42,7 +63,7 @@
           <button form="code-form" name="save" type="submit" class="save-button rounded-border purple-bkg">SAVE</button>
         </div>
       </form>
-    </div>
+    </div> -->
   </main>
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>

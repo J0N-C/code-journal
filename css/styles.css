@@ -57,10 +57,6 @@ ul {
   padding: 0;
 }
 
-.space-bt {
-  justify-content: space-between;
-}
-
 .right {
   justify-content: flex-end;
 }

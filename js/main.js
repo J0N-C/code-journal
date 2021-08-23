@@ -36,6 +36,9 @@ $showEntries.addEventListener('click', function (event) {
 /* photo preview */
 function handleInput(event) {
   $photo.setAttribute('src', $photoUrl.value);
+  if ($photoUrl.value === '') {
+    $photo.setAttribute('src', 'images/placeholder-image-square.jpg');
+  }
 }
 
 /* submit entry */

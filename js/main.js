@@ -73,7 +73,7 @@ function showEntries() {
     const $image = document.createElement('img');
     $image.setAttribute('src', data.entries[entryCount].photourl);
     const $entryText = document.createElement('div');
-    $entryText.classname = 'column-half';
+    $entryText.className = 'column-half';
     const $title = document.createElement('h3');
     $title.textContent = data.entries[entryCount].title;
     const $notes = document.createElement('p');

@@ -71,6 +71,7 @@ function showEntries() {
   $noEntry.className = 'no-entry hidden';
   while (entryCount < (data.nextEntryId - 1)) {
     const $item = document.createElement('li');
+    $item.setAttribute('data-entry-id', entryCount);
     const $entryRow = document.createElement('div');
     $entryRow.className = 'row';
     const $entryFrame = document.createElement('div');
@@ -116,4 +117,9 @@ function showEntries() {
           </li>
 */
 
-/* edit entry DECLARED AFTER FUNCTION CREATES HTML */
+/* edit entry DECLARED AFTER FUNCTION CREATES HTML
+const $editAll = document.querySelectorAll('.fa-pen');
+document.addEventListener('click', function (event) {
+  if (event.target && event.target.nodeName !== 'I') return;
+  console.log(event.target.closest('li'));
+}); */

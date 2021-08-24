@@ -23,6 +23,11 @@ $form.addEventListener('submit', submitForm);
 
 /* for switching to new form */
 $newEntry.addEventListener('click', function () {
+  $viewForm.querySelector('h2').textContent = 'New Entry';
+  $form.title.value = '';
+  $form.photo.value = '';
+  $form.notes.value = '';
+  handleInput();
   $viewEntries.className = 'hidden';
   $viewForm.className = '';
 });
@@ -44,7 +49,7 @@ function handleInput() {
 }
 
 /* submit entry */
-function submitForm() {
+function submitForm(entryId) {
   event.preventDefault();
   const filledForm = {};
   filledForm.entryID = data.nextEntryId;
@@ -117,9 +122,19 @@ function showEntries() {
           </li>
 */
 
-/* edit entry DECLARED AFTER FUNCTION CREATES HTML
-const $editAll = document.querySelectorAll('.fa-pen');
+/* edit entry DECLARED AFTER FUNCTION CREATES HTML */
 document.addEventListener('click', function (event) {
   if (event.target && event.target.nodeName !== 'I') return;
-  console.log(event.target.closest('li'));
-}); */
+  const currentEntry = event.target.closest('li').getAttribute('data-entry-id');
+  $viewEntries.className = 'hidden';
+  $viewForm.className = '';
+  $viewForm.querySelector('h2').textContent = 'Edit Entry';
+  $photo.setAttribute('src', data.entries[currentEntry].photourl);
+  $form.title.value = data.entries[currentEntry].title;
+  $form.photo.value = data.entries[currentEntry].photourl;
+  $form.notes.value = data.entries[currentEntry].notes;
+});
+
+/*   filledForm.title = $form.title.value;
+  filledForm.photourl = $form.photo.value;
+  filledForm.notes = $form.notes.value; */

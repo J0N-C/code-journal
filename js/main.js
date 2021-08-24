@@ -22,19 +22,21 @@ window.addEventListener('DOMContentLoaded', showEntries());
 $form.addEventListener('submit', submitForm);
 
 /* for switching to new form */
-$newEntry.addEventListener('click', function (event) {
+$newEntry.addEventListener('click', function () {
   $viewEntries.className = 'hidden';
   $viewForm.className = '';
 });
 
 /* for switching to entries */
-$showEntries.addEventListener('click', function (event) {
+$showEntries.addEventListener('click', function () {
   $viewEntries.className = '';
   $viewForm.className = 'hidden';
 });
 
+/* for editing */
+
 /* photo preview */
-function handleInput(event) {
+function handleInput() {
   $photo.setAttribute('src', $photoUrl.value);
   if ($photoUrl.value === '') {
     $photo.setAttribute('src', 'images/placeholder-image-square.jpg');
@@ -42,7 +44,7 @@ function handleInput(event) {
 }
 
 /* submit entry */
-function submitForm(event) {
+function submitForm() {
   event.preventDefault();
   const filledForm = {};
   filledForm.entryID = data.nextEntryId;
@@ -75,13 +77,19 @@ function showEntries() {
     $entryFrame.className = 'column-half img-frame';
     const $image = document.createElement('img');
     $image.setAttribute('src', data.entries[entryCount].photourl);
+    const $entryTitle = document.createElement('div');
+    $entryTitle.className = 'row space-bt';
     const $entryText = document.createElement('div');
     $entryText.className = 'column-half';
     const $title = document.createElement('h3');
     $title.textContent = data.entries[entryCount].title;
+    const $editIcon = document.createElement('i');
+    $editIcon.className = 'fas fa-pen fa-lg purple';
     const $notes = document.createElement('p');
     $notes.textContent = data.entries[entryCount].notes;
-    $entryText.appendChild($title);
+    $entryTitle.appendChild($title);
+    $entryTitle.appendChild($editIcon);
+    $entryText.appendChild($entryTitle);
     $entryText.appendChild($notes);
     $entryFrame.appendChild($image);
     $entryRow.appendChild($entryFrame);
@@ -91,3 +99,21 @@ function showEntries() {
     entryCount++;
   }
 }
+/* CREATED HTML SKELETON
+          <li>
+            <div class="row">
+              <div class="column-half img-frame">
+                <img src="images/nelson.png" alt="placeholder">
+              </div>
+              <div class="column-half">
+                <div class="row space-bt">
+                  <h3>Test Title</h3>
+                  <i id="edit" class="fas fa-pen fa-lg purple"></i>
+                </div>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil dolorem excepturi aut!</p>
+              </div>
+            </div>
+          </li>
+*/
+
+/* edit entry DECLARED AFTER FUNCTION CREATES HTML */

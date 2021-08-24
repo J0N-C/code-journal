@@ -18,11 +18,28 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="container">
+
   <header>
-    <h1 class="head-banner purple-bkg" >Code Journal</h1>
+    <div class="head-banner purple-bkg row align-center">
+      <h1>Code Journal</h1>
+      <a class="show-entries">Entries</a>
+    </div>
   </header>
-  <main>
-    <div class="form" data-view="entry-form">
+  <main class="form">
+
+    <div id="visible-entries">
+      <div class="row">
+        <h2>Entries</h2>
+        <button id="new-entry" name="new" class="save-button rounded-border purple-bkg">NEW</button>
+      </div>
+      <div data-view="entries">
+        <p class="no-entry">No entries have been recorded.</p>
+        <ul id="entrylist">
+        </ul>
+      </div>
+    </div>
+
+    <div id="visible-form" data-view="entry-form" class="hidden">
       <h2>New Entry</h2>
       <form class="row right" id="code-form">
         <div class="column-half img-frame">
@@ -43,6 +60,7 @@
         </div>
       </form>
     </div>
+
   </main>
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>

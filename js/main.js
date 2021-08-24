@@ -21,24 +21,23 @@ window.addEventListener('DOMContentLoaded', showEntries());
 /* submit entry */
 $form.addEventListener('submit', submitForm);
 
-/* for switching to new form */
+/* for switching to new form blank entries */
 $newEntry.addEventListener('click', function () {
   $viewForm.querySelector('h2').textContent = 'New Entry';
   $form.title.value = '';
   $form.photo.value = '';
   $form.notes.value = '';
+  $form.setAttribute('data-view', 'entry-form');
   handleInput();
   $viewEntries.className = 'hidden';
   $viewForm.className = '';
 });
 
-/* for switching to entries */
+/* for switching to viewing entries */
 $showEntries.addEventListener('click', function () {
   $viewEntries.className = '';
   $viewForm.className = 'hidden';
 });
-
-/* for editing */
 
 /* photo preview */
 function handleInput() {
@@ -49,17 +48,23 @@ function handleInput() {
 }
 
 /* submit entry */
-function submitForm(entryId) {
-  event.preventDefault();
-  const filledForm = {};
-  filledForm.entryID = data.nextEntryId;
-  filledForm.title = $form.title.value;
-  filledForm.photourl = $form.photo.value;
-  filledForm.notes = $form.notes.value;
-  data.nextEntryId++;
-  $form.reset();
-  data.entries.push(filledForm);
-  document.querySelector('#photo').setAttribute('src', 'images/placeholder-image-square.jpg');
+function submitForm(event) {
+  if ($form.getAttribute('data-view') === 'entry-form') {
+    const filledForm = {};
+    filledForm.entryID = data.nextEntryId;
+    filledForm.title = $form.title.value;
+    filledForm.photourl = $form.photo.value;
+    filledForm.notes = $form.notes.value;
+    data.nextEntryId++;
+    $form.reset();
+    data.entries.push(filledForm);
+    document.querySelector('#photo').setAttribute('src', 'images/placeholder-image-square.jpg');
+  } else {
+    const currentEntry = parseInt($form.getAttribute('data-view'));
+    data.entries[currentEntry].title = $form.title.value;
+    data.entries[currentEntry].photourl = $form.photo.value;
+    data.entries[currentEntry].notes = $form.notes.value;
+  }
   var dataJSON = JSON.stringify(data);
   localStorage.setItem('journal-data', dataJSON);
   showEntries();
@@ -133,8 +138,7 @@ document.addEventListener('click', function (event) {
   $form.title.value = data.entries[currentEntry].title;
   $form.photo.value = data.entries[currentEntry].photourl;
   $form.notes.value = data.entries[currentEntry].notes;
+  $form.setAttribute('data-view', currentEntry);
 });
 
-/*   filledForm.title = $form.title.value;
-  filledForm.photourl = $form.photo.value;
-  filledForm.notes = $form.notes.value; */
+/* Task: navigate to custom ID? or have to set up separate ID for each? */

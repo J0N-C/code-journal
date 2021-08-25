@@ -15,7 +15,7 @@ const $photo = document.querySelector('#photo');
 /* photo preview */
 $photoUrl.addEventListener('input', handleInput);
 
-/* show all entries */
+/* load all entries */
 window.addEventListener('DOMContentLoaded', showEntries());
 
 /* submit entry */
@@ -47,8 +47,10 @@ function handleInput() {
   }
 }
 
-/* submit entry */
+/* submit or edit entry */
 function submitForm(event) {
+  let currentEntry = null;
+  event.preventDefault();
   if ($form.getAttribute('data-view') === 'entry-form') {
     const filledForm = {};
     filledForm.entryID = data.nextEntryId;
@@ -60,7 +62,7 @@ function submitForm(event) {
     data.entries.push(filledForm);
     document.querySelector('#photo').setAttribute('src', 'images/placeholder-image-square.jpg');
   } else {
-    const currentEntry = parseInt($form.getAttribute('data-view'));
+    currentEntry = parseInt($form.getAttribute('data-view'));
     data.entries[currentEntry].title = $form.title.value;
     data.entries[currentEntry].photourl = $form.photo.value;
     data.entries[currentEntry].notes = $form.notes.value;
@@ -70,6 +72,8 @@ function submitForm(event) {
   showEntries();
   $viewEntries.className = '';
   $viewForm.className = 'hidden';
+  location.reload();
+  document.getElementById(currentEntry).scrollIntoView();
 }
 
 /* show all entries */
@@ -82,6 +86,7 @@ function showEntries() {
   while (entryCount < (data.nextEntryId - 1)) {
     const $item = document.createElement('li');
     $item.setAttribute('data-entry-id', entryCount);
+    $item.setAttribute('id', entryCount);
     const $entryRow = document.createElement('div');
     $entryRow.className = 'row';
     const $entryFrame = document.createElement('div');
@@ -127,7 +132,7 @@ function showEntries() {
           </li>
 */
 
-/* edit entry DECLARED AFTER FUNCTION CREATES HTML */
+/* edit entry DECLARE AFTER FUNCTION CREATES HTML */
 document.addEventListener('click', function (event) {
   if (event.target && event.target.nodeName !== 'I') return;
   const currentEntry = event.target.closest('li').getAttribute('data-entry-id');
@@ -141,4 +146,4 @@ document.addEventListener('click', function (event) {
   $form.setAttribute('data-view', currentEntry);
 });
 
-/* Task: navigate to custom ID? or have to set up separate ID for each? */
+/*  */

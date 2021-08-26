@@ -41,7 +41,7 @@
 
     <div id="visible-form" data-view="entry-form" class="hidden">
       <h2>New Entry</h2>
-      <form class="row right" id="code-form">
+      <form class="row" id="code-form">
         <div class="column-half img-frame">
           <img id="photo" src="images/placeholder-image-square.jpg" alt="placeholder">
         </div>
@@ -55,7 +55,8 @@
           <label for="entry-notes">Notes</label>
           <textarea required name="notes" id="notes"></textarea>
         </div>
-        <div>
+        <div class="column-full row space-bt align-center">
+          <a id="delete-entry" class="">Delete Entry</a>
           <button form="code-form" name="save" type="submit" class="save-button rounded-border purple-bkg">SAVE</button>
         </div>
       </form>

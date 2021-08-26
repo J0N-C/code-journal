@@ -35,6 +35,7 @@ label {
   padding-bottom: 0.5rem;
 }
 
+a,
 button,
 i {
   cursor: pointer;
@@ -62,6 +63,11 @@ textarea {
 ul {
   list-style: none;
   padding: 0;
+}
+
+#delete-entry {
+  color: rgb(206, 0, 0);
+  text-decoration: underline;
 }
 
 .right {
@@ -125,7 +131,6 @@ ul {
 .save-button {
   margin: auto;
   margin-right: 0;
-  margin-bottom: 1rem;
   border: none;
   padding: 0.5rem 1.25rem;
   font-size: 100%;
@@ -133,7 +138,6 @@ ul {
 
 .show-entries {
   margin-left: 1.5rem;
-  cursor: pointer;
 }
 
 input:focus,

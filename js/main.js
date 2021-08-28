@@ -11,6 +11,10 @@ const $newEntry = document.querySelector('#new-entry');
 const $viewForm = document.querySelector('#visible-form');
 const $photoUrl = document.querySelector('#photolink');
 const $photo = document.querySelector('#photo');
+const $deleteEntry = document.querySelector('#delete-entry');
+const deletePopup = document.querySelector('#delete-popup');
+const $confirmDelete = document.querySelector('#confirm-delete');
+const $cancelDelete = document.querySelector('#cancel-delete');
 
 /* photo preview listener */
 $photoUrl.addEventListener('input', handleInput);
@@ -18,8 +22,11 @@ $photoUrl.addEventListener('input', handleInput);
 /* load all entries */
 window.addEventListener('DOMContentLoaded', showEntries());
 
-/* list of all entries -- leave after showEntries func! */
-const $entryList = $entries.querySelectorAll('li');
+/*
+list of all entries -- leave after showEntries func
+nodelist is reversed data array! node.children updates nodes live, unlike querySelectorAll().
+*/
+const $entryList = $entries.children;
 
 /* submit entry */
 $form.addEventListener('submit', submitForm);
@@ -31,6 +38,7 @@ $newEntry.addEventListener('click', function () {
   $form.setAttribute('data-view', 'entry-form');
   handleInput();
   $viewEntries.className = 'hidden';
+  $deleteEntry.className = 'hidden';
   $viewForm.className = '';
 });
 
@@ -38,6 +46,44 @@ $newEntry.addEventListener('click', function () {
 $showEntries.addEventListener('click', function () {
   $viewEntries.className = '';
   $viewForm.className = 'hidden';
+});
+
+/* delete popup */
+$deleteEntry.addEventListener('click', function () {
+  deletePopup.className = '';
+});
+
+/* cancel delete */
+$cancelDelete.addEventListener('click', function () {
+  deletePopup.className = 'hidden';
+});
+
+/* delete entry */
+$confirmDelete.addEventListener('click', function () {
+  deletePopup.className = 'hidden';
+  const currentEntry = parseInt($form.getAttribute('data-view')); /* currentEntry = data-view of current page, set by listener of line 116 */
+  data.entries.splice(currentEntry, 1); /* remove object from data.entries */
+  let entryListIndex = $entryList.length - (currentEntry + 1); /* Reverse index for $entryList */
+  $entryList[entryListIndex].remove(); /* Remove node from $entryList */
+  entryCount = data.entries.length; /* reset entryCount */
+  entryListIndex--; /* subtract 1 for deleted element */
+  while (entryListIndex >= 0) {
+    const newCount = parseInt($entryList[entryListIndex].getAttribute('data-entry-id')) - 1;
+    $entryList[entryListIndex].setAttribute('data-entry-id', newCount);
+    $entryList[entryListIndex].setAttribute('id', newCount);
+    entryListIndex--;
+  } /* loop to update all data-entry-id */
+  data.nextEntryId--; /* subtract 1 from nextEntryId */
+  let dataEntryNum = currentEntry; /* for looping all entryID */
+  while (dataEntryNum < data.nextEntryId - 1) {
+    data.entries[dataEntryNum].entryID--;
+    dataEntryNum++;
+  } /* loop to update all entryID property values in data.entries */
+  $viewEntries.className = '';
+  $viewForm.className = 'hidden';
+  if (currentEntry) {
+    document.getElementById(currentEntry - 1).scrollIntoView();
+  }
 });
 
 /* photo preview func */
@@ -64,28 +110,26 @@ function submitForm(event) {
     document.querySelector('#photo').setAttribute('src', 'images/placeholder-image-square.jpg');
     showEntries();
   } else {
-    let dataEntryNum = null;
     currentEntry = parseInt($form.getAttribute('data-view'));
     data.entries[currentEntry].title = $form.title.value;
     data.entries[currentEntry].photourl = $form.photo.value;
     data.entries[currentEntry].notes = $form.notes.value;
-    for (let i = 0; i < $entryList.length; i++) {
-      if (parseInt($entryList[i].getAttribute('data-entry-id')) === currentEntry) {
-        dataEntryNum = i;
-      }
-    }
-    $entryList[dataEntryNum].querySelector('h3').textContent = $form.title.value;
-    $entryList[dataEntryNum].querySelector('img').setAttribute('src', $form.photo.value);
-    $entryList[dataEntryNum].querySelector('p').textContent = $form.notes.value;
+    const entryListIndex = $entryList.length - (currentEntry + 1); /* nodelist is reversed data array! */
+    $entryList[entryListIndex].querySelector('h3').textContent = $form.title.value;
+    $entryList[entryListIndex].querySelector('img').setAttribute('src', $form.photo.value);
+    $entryList[entryListIndex].querySelector('p').textContent = $form.notes.value;
   }
   $viewEntries.className = '';
   $viewForm.className = 'hidden';
-  document.getElementById(currentEntry).scrollIntoView();
+  if (currentEntry !== null) {
+    document.getElementById(currentEntry).scrollIntoView();
+  }
 }
 
 /* edit entry DECLARE AFTER FUNCTION CREATES HTML */
 document.addEventListener('click', function (event) {
   if (event.target && event.target.nodeName !== 'I') return;
+  $deleteEntry.className = '';
   const currentEntry = event.target.closest('li').getAttribute('data-entry-id');
   $viewEntries.className = 'hidden';
   $viewForm.className = '';
@@ -152,6 +196,3 @@ function showEntries() {
             </div>
           </li>
 */
-
-/* set stringify json to beforeunload
-edit html textContent directly instead of reloading data every time */

@@ -17,52 +17,68 @@
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="container">
+<body>
 
-  <header>
-    <div class="head-banner purple-bkg row align-center">
-      <h1>Code Journal</h1>
-      <a class="show-entries">Entries</a>
-    </div>
-  </header>
-  <main class="form">
-
-    <div id="visible-entries">
-      <div class="row">
-        <h2>Entries</h2>
-        <button id="new-entry" name="new" class="save-button rounded-border purple-bkg">NEW</button>
-      </div>
-      <div data-view="entries">
-        <p class="no-entry">No entries have been recorded.</p>
-        <ul id="entrylist">
-        </ul>
+  <div id="delete-popup" class="hidden">
+    <div class="confirm">
+      <h4>Are you sure you want to delete this entry?</h4>
+      <div class="column-full flex space-bt align-center">
+        <button id="cancel-delete" class="save-button">CANCEL</button>
+        <button id="confirm-delete" class="save-button">CONFIRM</button>
       </div>
     </div>
+  </div>
 
-    <div id="visible-form" data-view="entry-form" class="hidden">
-      <h2>New Entry</h2>
-      <form class="row" id="code-form">
-        <div class="column-half img-frame">
-          <img id="photo" src="images/placeholder-image-square.jpg" alt="placeholder">
-        </div>
-        <div class="column-half">
-          <label for="entry-title">Title</label>
-          <input required name="title" type="text" id="title">
-          <label for="entry-photo">Photo URL</label>
-          <input required name="photo" type="url" id="photolink">
-        </div>
-        <div class="column-full">
-          <label for="entry-notes">Notes</label>
-          <textarea required name="notes" id="notes"></textarea>
-        </div>
-        <div class="column-full row space-bt align-center">
-          <a id="delete-entry" class="">Delete Entry</a>
-          <button form="code-form" name="save" type="submit" class="save-button rounded-border purple-bkg">SAVE</button>
-        </div>
-      </form>
-    </div>
+  <div class="container">
 
-  </main>
+    <header>
+      <div class="head-banner purple-bkg row align-center">
+        <h1>Code Journal</h1>
+        <a class="show-entries">Entries</a>
+      </div>
+    </header>
+
+    <main class="form">
+
+      <div id="visible-entries">
+        <div class="row">
+          <h2>Entries</h2>
+          <button id="new-entry" name="new" class="save-button rounded-border purple-bkg">NEW</button>
+        </div>
+        <div data-view="entries">
+          <p class="no-entry">No entries have been recorded.</p>
+          <ul id="entrylist">
+          </ul>
+        </div>
+      </div>
+
+      <div id="visible-form" data-view="entry-form" class="hidden">
+        <h2>New Entry</h2>
+        <form class="row" id="code-form">
+          <div class="column-half img-frame">
+            <img id="photo" src="images/placeholder-image-square.jpg" alt="placeholder">
+          </div>
+          <div class="column-half">
+            <label for="entry-title">Title</label>
+            <input required name="title" type="text" id="title">
+            <label for="entry-photo">Photo URL</label>
+            <input required name="photo" type="url" id="photolink">
+          </div>
+          <div class="column-full">
+            <label for="entry-notes">Notes</label>
+            <textarea required name="notes" id="notes"></textarea>
+          </div>
+          <div class="column-full row space-bt align-center">
+            <a id="delete-entry">Delete Entry</a>
+            <button form="code-form" name="save" type="submit" class="save-button purple-bkg">SAVE</button>
+          </div>
+        </form>
+      </div>
+
+    </main>
+
+  </div>
+
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
 </body>

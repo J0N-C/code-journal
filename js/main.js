@@ -11,7 +11,10 @@ const $newEntry = document.querySelector('#new-entry');
 const $viewForm = document.querySelector('#visible-form');
 const $photoUrl = document.querySelector('#photolink');
 const $photo = document.querySelector('#photo');
-const $delete = document.querySelector('#delete-entry');
+const $deleteEntry = document.querySelector('#delete-entry');
+const deletePopup = document.querySelector('#delete-popup');
+const $confirmDelete = document.querySelector('#confirm-delete');
+const $cancelDelete = document.querySelector('#cancel-delete');
 
 /* photo preview listener */
 $photoUrl.addEventListener('input', handleInput);
@@ -19,10 +22,9 @@ $photoUrl.addEventListener('input', handleInput);
 /* load all entries */
 window.addEventListener('DOMContentLoaded', showEntries());
 
-/* list of all entries -- leave after showEntries func
-nodelist is reversed data array! To reverse:
-const entryListIndex = $entryList.length - (currentEntry + 1);
-node.children updates nodes live, unlike querySelectorAll().
+/*
+list of all entries -- leave after showEntries func
+nodelist is reversed data array! node.children updates nodes live, unlike querySelectorAll().
 */
 const $entryList = $entries.children;
 
@@ -36,7 +38,7 @@ $newEntry.addEventListener('click', function () {
   $form.setAttribute('data-view', 'entry-form');
   handleInput();
   $viewEntries.className = 'hidden';
-  $delete.className = 'hidden';
+  $deleteEntry.className = 'hidden';
   $viewForm.className = '';
 });
 
@@ -46,12 +48,23 @@ $showEntries.addEventListener('click', function () {
   $viewForm.className = 'hidden';
 });
 
+/* delete popup */
+$deleteEntry.addEventListener('click', function () {
+  deletePopup.className = '';
+});
+
+/* cancel delete */
+$cancelDelete.addEventListener('click', function () {
+  deletePopup.className = 'hidden';
+});
+
 /* delete entry */
-$delete.addEventListener('click', function () {
+$confirmDelete.addEventListener('click', function () {
+  deletePopup.className = 'hidden';
   const currentEntry = parseInt($form.getAttribute('data-view')); /* currentEntry = data-view of current page, set by listener of line 116 */
-  data.entries.splice(currentEntry, 1);
+  data.entries.splice(currentEntry, 1); /* remove object from data.entries */
   let entryListIndex = $entryList.length - (currentEntry + 1); /* Reverse index for $entryList */
-  $entryList[entryListIndex].remove(); /* Delete node */
+  $entryList[entryListIndex].remove(); /* Remove node from $entryList */
   entryCount = data.entries.length; /* reset entryCount */
   entryListIndex--; /* subtract 1 for deleted element */
   while (entryListIndex >= 0) {
@@ -116,7 +129,7 @@ function submitForm(event) {
 /* edit entry DECLARE AFTER FUNCTION CREATES HTML */
 document.addEventListener('click', function (event) {
   if (event.target && event.target.nodeName !== 'I') return;
-  $delete.className = '';
+  $deleteEntry.className = '';
   const currentEntry = event.target.closest('li').getAttribute('data-entry-id');
   $viewEntries.className = 'hidden';
   $viewForm.className = '';
@@ -183,5 +196,3 @@ function showEntries() {
             </div>
           </li>
 */
-
-/* potential problem when deleting an entry messing up total entry count? */

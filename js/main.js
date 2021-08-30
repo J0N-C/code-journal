@@ -84,6 +84,7 @@ $confirmDelete.addEventListener('click', function () {
   if (currentEntry) {
     document.getElementById(currentEntry - 1).scrollIntoView();
   }
+
 });
 
 /* photo preview func */

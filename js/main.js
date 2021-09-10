@@ -3,7 +3,7 @@
 
 var entryCount = 0;
 const $form = document.querySelector('#code-form');
-const $searchForm = document.querySelector('#search-form');
+const $searchForm = document.querySelector('.search-form');
 const $entries = document.querySelector('#entrylist');
 const $noEntry = document.querySelector('.no-entry');
 const $viewEntries = document.querySelector('#visible-entries');
@@ -50,6 +50,7 @@ $newEntry.addEventListener('click', function () {
 $showEntries.addEventListener('click', function () {
   $viewEntries.className = '';
   $viewForm.className = 'hidden';
+  $viewEntries.querySelector('h2').textContent = 'Entries';
 });
 
 /* delete popup */
@@ -83,8 +84,7 @@ $confirmDelete.addEventListener('click', function () {
     data.entries[dataEntryNum].entryID--;
     dataEntryNum++;
   } /* loop to update all entryID property values in data.entries */
-  $viewEntries.className = '';
-  $viewForm.className = 'hidden';
+  resetView();
   if (currentEntry) {
     document.getElementById(currentEntry - 1).scrollIntoView();
   }
@@ -99,7 +99,7 @@ function handleInput() {
 }
 
 /* submit or edit entry func */
-function submitForm() {
+function submitForm(event) {
   let currentEntry = null;
   event.preventDefault();
   if ($form.getAttribute('data-view') === 'entry-form') {
@@ -123,15 +123,14 @@ function submitForm() {
     $entryList[entryListIndex].querySelector('img').setAttribute('src', $form.photo.value);
     $entryList[entryListIndex].querySelector('p').textContent = $form.notes.value;
   }
-  $viewEntries.className = '';
-  $viewForm.className = 'hidden';
+  resetView();
   if (currentEntry !== null) {
     document.getElementById(currentEntry).scrollIntoView();
   }
 }
 
 /* edit entry DECLARE AFTER FUNCTION CREATES HTML */
-document.addEventListener('click', function (event) {
+$viewEntries.addEventListener('click', function (event) {
   if (event.target && event.target.nodeName !== 'I') return;
   $deleteEntry.className = '';
   const currentEntry = event.target.closest('li').getAttribute('data-entry-id');
@@ -146,8 +145,23 @@ document.addEventListener('click', function (event) {
 });
 
 /* search entries func */
-function searchEntries() {
+function searchEntries(event) {
+  event.preventDefault();
+  $viewEntries.querySelector('h2').textContent = `Search results for: ${$searchForm.search.value}`;
+  const searchFor = new RegExp($searchForm.search.value, 'gi');
+  const searchArr = [];
+  data.entries.forEach(entry => {
+    if (searchFor.test(entry.title) || searchFor.test(entry.notes)) {
+      searchArr.push(entry.entryID);
+    }
+  });
+}
 
+/* reset view entries func */
+function resetView() {
+  $viewEntries.className = '';
+  $viewForm.className = 'hidden';
+  $viewEntries.querySelector('h2').textContent = 'Entries';
 }
 
 /* show all entries func */

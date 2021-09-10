@@ -3,6 +3,7 @@
 
 var entryCount = 0;
 const $form = document.querySelector('#code-form');
+const $searchForm = document.querySelector('#search-form');
 const $entries = document.querySelector('#entrylist');
 const $noEntry = document.querySelector('.no-entry');
 const $viewEntries = document.querySelector('#visible-entries');
@@ -30,6 +31,9 @@ const $entryList = $entries.children;
 
 /* submit entry */
 $form.addEventListener('submit', submitForm);
+
+/* search entries */
+$searchForm.addEventListener('submit', searchEntries);
 
 /* for switching to new form blank entries */
 $newEntry.addEventListener('click', function () {
@@ -95,7 +99,7 @@ function handleInput() {
 }
 
 /* submit or edit entry func */
-function submitForm(event) {
+function submitForm() {
   let currentEntry = null;
   event.preventDefault();
   if ($form.getAttribute('data-view') === 'entry-form') {
@@ -140,6 +144,11 @@ document.addEventListener('click', function (event) {
   $form.notes.value = data.entries[currentEntry].notes;
   $form.setAttribute('data-view', currentEntry);
 });
+
+/* search entries func */
+function searchEntries() {
+
+}
 
 /* show all entries func */
 function showEntries() {

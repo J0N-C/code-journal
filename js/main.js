@@ -153,6 +153,7 @@ function searchEntries(event) {
       $entryList[i].className = 'hidden';
     }
   }
+  $searchForm.reset();
 }
 
 /* reset view entries func */

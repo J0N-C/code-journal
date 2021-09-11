@@ -47,11 +47,7 @@ $newEntry.addEventListener('click', function () {
 });
 
 /* for switching to viewing entries */
-$showEntries.addEventListener('click', function () {
-  $viewEntries.className = '';
-  $viewForm.className = 'hidden';
-  $viewEntries.querySelector('h2').textContent = 'Entries';
-});
+$showEntries.addEventListener('click', resetView);
 
 /* delete popup */
 $deleteEntry.addEventListener('click', function () {
@@ -147,14 +143,16 @@ $viewEntries.addEventListener('click', function (event) {
 /* search entries func */
 function searchEntries(event) {
   event.preventDefault();
-  $viewEntries.querySelector('h2').textContent = `Search results for: ${$searchForm.search.value}`;
+  resetView();
+  $viewEntries.querySelector('h2').textContent = `Search results for: "${$searchForm.search.value}"`;
   const searchFor = new RegExp($searchForm.search.value, 'gi');
-  const searchArr = [];
-  data.entries.forEach(entry => {
-    if (searchFor.test(entry.title) || searchFor.test(entry.notes)) {
-      searchArr.push(entry.entryID);
+  for (let i = 0; i < $entryList.length; i++) {
+    if (searchFor.test($entryList[i].querySelector('h3').textContent) || searchFor.test($entryList[i].querySelector('p').textContent)) {
+      continue;
+    } else {
+      $entryList[i].className = 'hidden';
     }
-  });
+  }
 }
 
 /* reset view entries func */
@@ -162,6 +160,9 @@ function resetView() {
   $viewEntries.className = '';
   $viewForm.className = 'hidden';
   $viewEntries.querySelector('h2').textContent = 'Entries';
+  for (let i = 0; i < $entryList.length; i++) {
+    $entryList[i].className = '';
+  }
 }
 
 /* show all entries func */

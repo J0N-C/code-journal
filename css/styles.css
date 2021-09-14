@@ -157,6 +157,11 @@ ul {
   margin: 0;
 }
 
+.date-of-entry {
+  color: darkgray;
+  text-align: right;
+}
+
 .head-banner {
   margin: 1rem 0 0 0;
   font-weight: 400;

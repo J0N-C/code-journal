@@ -104,6 +104,7 @@ function submitForm(event) {
     filledForm.title = $form.title.value;
     filledForm.photourl = $form.photo.value;
     filledForm.notes = $form.notes.value;
+    filledForm.date = currentDate();
     data.nextEntryId++;
     $form.reset();
     data.entries.push(filledForm);
@@ -166,6 +167,17 @@ function resetView() {
   }
 }
 
+/* log date */
+function currentDate() {
+  const fullDate = [];
+  const today = new Date();
+  fullDate.push(today.getFullYear());
+  fullDate.push(today.getMonth());
+  fullDate.push(today.getDate());
+  fullDate.push(today.getHours());
+  return fullDate;
+}
+
 /* show all entries func */
 function showEntries() {
   if (data.entries.length === 0) {
@@ -193,10 +205,16 @@ function showEntries() {
     $editIcon.className = 'fas fa-pen fa-lg purple';
     const $notes = document.createElement('p');
     $notes.textContent = data.entries[entryCount].notes;
+    const $dateEntered = document.createElement('p');
+    $dateEntered.className = 'date-of-entry';
+    if (data.entries[entryCount].date !== undefined) {
+      $dateEntered.textContent = `Date Created: ${(data.entries[entryCount].date[1]) + 1}-${data.entries[entryCount].date[2]}-${data.entries[entryCount].date[0]}`;
+    }
     $entryTitle.appendChild($title);
     $entryTitle.appendChild($editIcon);
     $entryText.appendChild($entryTitle);
     $entryText.appendChild($notes);
+    $entryText.appendChild($dateEntered);
     $entryFrame.appendChild($image);
     $entryRow.appendChild($entryFrame);
     $entryRow.appendChild($entryText);

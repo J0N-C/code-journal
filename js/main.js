@@ -3,6 +3,7 @@
 
 var entryCount = 0;
 const $form = document.querySelector('#code-form');
+const $searchForm = document.querySelector('.search-form');
 const $entries = document.querySelector('#entrylist');
 const $noEntry = document.querySelector('.no-entry');
 const $viewEntries = document.querySelector('#visible-entries');
@@ -31,6 +32,9 @@ const $entryList = $entries.children;
 /* submit entry */
 $form.addEventListener('submit', submitForm);
 
+/* search entries */
+$searchForm.addEventListener('submit', searchEntries);
+
 /* for switching to new form blank entries */
 $newEntry.addEventListener('click', function () {
   $viewForm.querySelector('h2').textContent = 'New Entry';
@@ -43,10 +47,7 @@ $newEntry.addEventListener('click', function () {
 });
 
 /* for switching to viewing entries */
-$showEntries.addEventListener('click', function () {
-  $viewEntries.className = '';
-  $viewForm.className = 'hidden';
-});
+$showEntries.addEventListener('click', resetView);
 
 /* delete popup */
 $deleteEntry.addEventListener('click', function () {
@@ -79,8 +80,7 @@ $confirmDelete.addEventListener('click', function () {
     data.entries[dataEntryNum].entryID--;
     dataEntryNum++;
   } /* loop to update all entryID property values in data.entries */
-  $viewEntries.className = '';
-  $viewForm.className = 'hidden';
+  resetView();
   if (currentEntry) {
     document.getElementById(currentEntry - 1).scrollIntoView();
   }
@@ -119,15 +119,14 @@ function submitForm(event) {
     $entryList[entryListIndex].querySelector('img').setAttribute('src', $form.photo.value);
     $entryList[entryListIndex].querySelector('p').textContent = $form.notes.value;
   }
-  $viewEntries.className = '';
-  $viewForm.className = 'hidden';
+  resetView();
   if (currentEntry !== null) {
     document.getElementById(currentEntry).scrollIntoView();
   }
 }
 
 /* edit entry DECLARE AFTER FUNCTION CREATES HTML */
-document.addEventListener('click', function (event) {
+$viewEntries.addEventListener('click', function (event) {
   if (event.target && event.target.nodeName !== 'I') return;
   $deleteEntry.className = '';
   const currentEntry = event.target.closest('li').getAttribute('data-entry-id');
@@ -140,6 +139,32 @@ document.addEventListener('click', function (event) {
   $form.notes.value = data.entries[currentEntry].notes;
   $form.setAttribute('data-view', currentEntry);
 });
+
+/* search entries func */
+function searchEntries(event) {
+  event.preventDefault();
+  resetView();
+  $viewEntries.querySelector('h2').textContent = `Search results for: "${$searchForm.search.value}"`;
+  const searchFor = new RegExp($searchForm.search.value, 'gi');
+  for (let i = 0; i < $entryList.length; i++) {
+    if (searchFor.test($entryList[i].querySelector('h3').textContent) || searchFor.test($entryList[i].querySelector('p').textContent)) {
+      continue;
+    } else {
+      $entryList[i].className = 'hidden';
+    }
+  }
+  $searchForm.reset();
+}
+
+/* reset view entries func */
+function resetView() {
+  $viewEntries.className = '';
+  $viewForm.className = 'hidden';
+  $viewEntries.querySelector('h2').textContent = 'Entries';
+  for (let i = 0; i < $entryList.length; i++) {
+    $entryList[i].className = '';
+  }
+}
 
 /* show all entries func */
 function showEntries() {

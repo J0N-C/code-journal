@@ -70,6 +70,12 @@ ul {
   padding: 0;
 }
 
+#search {
+  margin: 0;
+  margin-left: 1.5rem;
+  padding: 0.25rem 1rem 0.25rem 0.25rem;
+}
+
 #delete-entry {
   color: rgb(206, 0, 0);
   text-decoration: underline;
@@ -121,6 +127,17 @@ ul {
 
 .container {
   margin-bottom: 1rem;
+}
+
+.search-form {
+  display: flex;
+}
+
+.no-bkg-button {
+  border: none;
+  background-color: transparent;
+  position: relative;
+  right: 1.5rem;
 }
 
 .confirm {

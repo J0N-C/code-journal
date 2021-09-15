@@ -49,11 +49,13 @@ img,
 input,
 textarea,
 button,
+select,
 .confirm {
   border-radius: 6px;
 }
 
 input,
+select,
 textarea {
   margin-bottom: 1rem;
   padding: 0.5rem;
@@ -72,8 +74,14 @@ ul {
 
 #search {
   margin: 0;
-  margin-left: 1.5rem;
   padding: 0.25rem 1rem 0.25rem 0.25rem;
+}
+
+#sort-order {
+  margin: 0;
+  margin-top: 0.5rem;
+  width: auto;
+  padding: 0.25rem 0.5rem;
 }
 
 #delete-entry {
@@ -219,6 +227,14 @@ button:active {
 @media screen and (min-width: 768px) {
   img {
     max-height: 40rem;
+  }
+
+  #search {
+    margin-left: 1.5rem;
+  }
+
+  #sort-order {
+    margin: 0;
   }
 
   .img-frame {

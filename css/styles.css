@@ -215,7 +215,8 @@ ul {
 }
 
 input:focus,
-textarea:focus {
+textarea:focus,
+select:focus {
   outline: none;
   border: 3px solid rgb(73, 13, 129);
 }

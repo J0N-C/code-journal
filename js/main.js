@@ -238,6 +238,9 @@ function showEntries() {
     $editIcon.className = 'fas fa-pen fa-lg purple';
     const $notes = document.createElement('p');
     $notes.textContent = data.entries[entryCount].notes;
+    const $tagLine = document.createElement('p');
+    $tagLine.className = 'tags';
+    $tagLine.textContent = 'Tags: None';
     const $dateEntered = document.createElement('p');
     $dateEntered.className = 'date-of-entry';
     if (data.entries[entryCount].date !== undefined) {
@@ -247,6 +250,7 @@ function showEntries() {
     $entryTitle.appendChild($editIcon);
     $entryText.appendChild($entryTitle);
     $entryText.appendChild($notes);
+    $entryText.appendChild($tagLine);
     $entryText.appendChild($dateEntered);
     $entryFrame.appendChild($image);
     $entryRow.appendChild($entryFrame);

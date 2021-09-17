@@ -218,6 +218,10 @@ li {
   margin-left: 1.5rem;
 }
 
+.tags {
+  color: darkgray;
+}
+
 input:focus,
 textarea:focus,
 select:focus {

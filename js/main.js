@@ -126,6 +126,7 @@ function submitForm(event) {
     filledForm.entryID = data.nextEntryId;
     filledForm.title = $form.title.value;
     filledForm.photourl = $form.photo.value;
+    filledForm.tags = setTags($form.tags.value);
     filledForm.notes = $form.notes.value;
     filledForm.date = currentDate();
     data.nextEntryId++;
@@ -137,6 +138,7 @@ function submitForm(event) {
     currentEntry = parseInt($form.getAttribute('data-view'));
     data.entries[currentEntry].title = $form.title.value;
     data.entries[currentEntry].photourl = $form.photo.value;
+    data.entries[currentEntry].tags = setTags($form.tags.value);
     data.entries[currentEntry].notes = $form.notes.value;
     const entryListIndex = $entryList.length - (currentEntry + 1); /* nodelist is reversed data array! */
     $entryList[entryListIndex].querySelector('h3').textContent = $form.title.value;
@@ -164,6 +166,9 @@ $viewEntries.addEventListener('click', function (event) {
   $form.title.value = data.entries[currentEntry].title;
   $form.photo.value = data.entries[currentEntry].photourl;
   $form.notes.value = data.entries[currentEntry].notes;
+  if (data.entries[currentEntry].tags !== undefined) {
+    $form.tags.value = data.entries[currentEntry].tags.join(' ');
+  }
   $form.setAttribute('data-view', currentEntry);
 });
 
@@ -211,6 +216,12 @@ function reverseElements() {
   }
 }
 
+/* tag array setup */
+function setTags(tagString) {
+  const newTags = tagString.split(' ');
+  return newTags;
+}
+
 /* show all entries func */
 function showEntries() {
   if (data.entries.length === 0) {
@@ -240,7 +251,18 @@ function showEntries() {
     $notes.textContent = data.entries[entryCount].notes;
     const $tagLine = document.createElement('p');
     $tagLine.className = 'tags';
-    $tagLine.textContent = 'Tags: None';
+    $tagLine.textContent = 'Tags: ';
+    if (data.entries[entryCount].tags !== undefined) {
+      data.entries[entryCount].tags.forEach(tag => {
+        const $tagSpan = document.createElement('a');
+        $tagSpan.className = 'tag-link';
+        $tagSpan.textContent = tag;
+        $tagLine.appendChild($tagSpan);
+      });
+    } else {
+      const $tagSpan = document.createElement('span');
+      $tagSpan.textContent = 'None';
+    }
     const $dateEntered = document.createElement('p');
     $dateEntered.className = 'date-of-entry';
     if (data.entries[entryCount].date !== undefined) {

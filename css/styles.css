@@ -219,7 +219,14 @@ li {
 }
 
 .tags {
-  color: darkgray;
+  color: rgb(126, 126, 126);
+}
+
+.tag-link {
+  margin: 0 0.25rem;
+  padding: 0 0.25rem;
+  border-radius: 4px;
+  background-color: rgb(216, 216, 216);
 }
 
 input:focus,

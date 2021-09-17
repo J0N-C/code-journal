@@ -144,6 +144,9 @@ function submitForm(event) {
     $entryList[entryListIndex].querySelector('h3').textContent = $form.title.value;
     $entryList[entryListIndex].querySelector('img').setAttribute('src', $form.photo.value);
     $entryList[entryListIndex].querySelector('p').textContent = $form.notes.value;
+    const $tagLine = $entryList[entryListIndex].querySelector('.tags');
+    $tagLine.textContent = 'Tags: ';
+    showTags($tagLine, data.entries[currentEntry].tags);
   }
   resetView();
   if (currentSort === 'asc') {
@@ -221,6 +224,21 @@ function setTags(tagString) {
   const newTags = tagString.split(' ');
   return newTags;
 }
+/* tags line populating */
+function showTags(tagElement, tagArray) {
+  if (tagArray !== undefined) {
+    tagArray.forEach(tag => {
+      const $tagSpan = document.createElement('a');
+      $tagSpan.className = 'tag-link';
+      $tagSpan.textContent = tag;
+      tagElement.appendChild($tagSpan);
+    });
+  } else {
+    const $tagSpan = document.createElement('span');
+    $tagSpan.textContent = 'None';
+    tagElement.appendChild($tagSpan);
+  }
+}
 
 /* show all entries func */
 function showEntries() {
@@ -249,25 +267,15 @@ function showEntries() {
     $editIcon.className = 'fas fa-pen fa-lg purple';
     const $notes = document.createElement('p');
     $notes.textContent = data.entries[entryCount].notes;
-    const $tagLine = document.createElement('p');
-    $tagLine.className = 'tags';
-    $tagLine.textContent = 'Tags: ';
-    if (data.entries[entryCount].tags !== undefined) {
-      data.entries[entryCount].tags.forEach(tag => {
-        const $tagSpan = document.createElement('a');
-        $tagSpan.className = 'tag-link';
-        $tagSpan.textContent = tag;
-        $tagLine.appendChild($tagSpan);
-      });
-    } else {
-      const $tagSpan = document.createElement('span');
-      $tagSpan.textContent = 'None';
-    }
     const $dateEntered = document.createElement('p');
     $dateEntered.className = 'date-of-entry';
     if (data.entries[entryCount].date !== undefined) {
       $dateEntered.textContent = `Date Created: ${(data.entries[entryCount].date[1]) + 1}-${data.entries[entryCount].date[2]}-${data.entries[entryCount].date[0]}`;
     }
+    const $tagLine = document.createElement('p');
+    $tagLine.className = 'tags';
+    $tagLine.textContent = 'Tags: ';
+    showTags($tagLine, data.entries[entryCount].tags);
     $entryTitle.appendChild($title);
     $entryTitle.appendChild($editIcon);
     $entryText.appendChild($entryTitle);

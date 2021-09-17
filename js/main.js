@@ -2,6 +2,7 @@
 /* exported data */
 
 var entryCount = 0;
+var currentSort = 'desc';
 const $form = document.querySelector('#code-form');
 const $searchForm = document.querySelector('.search-form');
 const $entries = document.querySelector('#entrylist');
@@ -16,6 +17,7 @@ const $deleteEntry = document.querySelector('#delete-entry');
 const deletePopup = document.querySelector('#delete-popup');
 const $confirmDelete = document.querySelector('#confirm-delete');
 const $cancelDelete = document.querySelector('#cancel-delete');
+const $sortOrder = document.querySelector('#sort-order');
 
 /* photo preview listener */
 $photoUrl.addEventListener('input', handleInput);
@@ -61,6 +63,9 @@ $cancelDelete.addEventListener('click', function () {
 
 /* delete entry */
 $confirmDelete.addEventListener('click', function () {
+  if (currentSort === 'asc') {
+    reverseElements();
+  }
   deletePopup.className = 'hidden';
   const currentEntry = parseInt($form.getAttribute('data-view')); /* currentEntry = data-view of current page, set by listener of line 116 */
   data.entries.splice(currentEntry, 1); /* remove object from data.entries */
@@ -81,8 +86,23 @@ $confirmDelete.addEventListener('click', function () {
     dataEntryNum++;
   } /* loop to update all entryID property values in data.entries */
   resetView();
+  if (currentSort === 'asc') {
+    reverseElements();
+  }
   if (currentEntry) {
     document.getElementById(currentEntry - 1).scrollIntoView();
+  }
+});
+
+/* sort entries asc or desc */
+$sortOrder.addEventListener('change', function (event) {
+  if (event.target.value === 'asc' && event.target.value !== currentSort) {
+    reverseElements();
+    currentSort = 'asc';
+  }
+  if (event.target.value === 'desc' && event.target.value !== currentSort) {
+    reverseElements();
+    currentSort = 'desc';
   }
 });
 
@@ -97,6 +117,9 @@ function handleInput() {
 /* submit or edit entry func */
 function submitForm(event) {
   let currentEntry = null;
+  if (currentSort === 'asc') {
+    reverseElements();
+  }
   event.preventDefault();
   if ($form.getAttribute('data-view') === 'entry-form') {
     const filledForm = {};
@@ -104,6 +127,7 @@ function submitForm(event) {
     filledForm.title = $form.title.value;
     filledForm.photourl = $form.photo.value;
     filledForm.notes = $form.notes.value;
+    filledForm.date = currentDate();
     data.nextEntryId++;
     $form.reset();
     data.entries.push(filledForm);
@@ -120,6 +144,9 @@ function submitForm(event) {
     $entryList[entryListIndex].querySelector('p').textContent = $form.notes.value;
   }
   resetView();
+  if (currentSort === 'asc') {
+    reverseElements();
+  }
   if (currentEntry !== null) {
     document.getElementById(currentEntry).scrollIntoView();
   }
@@ -166,6 +193,24 @@ function resetView() {
   }
 }
 
+/* log date */
+function currentDate() {
+  const fullDate = [];
+  const today = new Date();
+  fullDate.push(today.getFullYear());
+  fullDate.push(today.getMonth());
+  fullDate.push(today.getDate());
+  fullDate.push(today.getHours());
+  return fullDate;
+}
+
+/* reverse order */
+function reverseElements() {
+  for (let i = $entryList.length - 1; i >= 0; i--) {
+    $entries.appendChild($entryList[i]);
+  }
+}
+
 /* show all entries func */
 function showEntries() {
   if (data.entries.length === 0) {
@@ -193,10 +238,16 @@ function showEntries() {
     $editIcon.className = 'fas fa-pen fa-lg purple';
     const $notes = document.createElement('p');
     $notes.textContent = data.entries[entryCount].notes;
+    const $dateEntered = document.createElement('p');
+    $dateEntered.className = 'date-of-entry';
+    if (data.entries[entryCount].date !== undefined) {
+      $dateEntered.textContent = `Date Created: ${(data.entries[entryCount].date[1]) + 1}-${data.entries[entryCount].date[2]}-${data.entries[entryCount].date[0]}`;
+    }
     $entryTitle.appendChild($title);
     $entryTitle.appendChild($editIcon);
     $entryText.appendChild($entryTitle);
     $entryText.appendChild($notes);
+    $entryText.appendChild($dateEntered);
     $entryFrame.appendChild($image);
     $entryRow.appendChild($entryFrame);
     $entryRow.appendChild($entryText);

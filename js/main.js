@@ -282,7 +282,7 @@ function showEntries() {
       $dateEntered.textContent = `Date Created: ${(data.entries[entryCount].date[1]) + 1}-${data.entries[entryCount].date[2]}-${data.entries[entryCount].date[0]}`;
     }
     const $tagLine = document.createElement('p');
-    $tagLine.className = 'tags';
+    $tagLine.className = 'tags row';
     $tagLine.textContent = 'Tags: ';
     showTags($tagLine, data.entries[entryCount].tags);
     $entryTitle.appendChild($title);

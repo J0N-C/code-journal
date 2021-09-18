@@ -159,6 +159,7 @@ function submitForm(event) {
 
 /* edit entry DECLARE AFTER FUNCTION CREATES HTML */
 $viewEntries.addEventListener('click', function (event) {
+  $form.reset();
   if (event.target && event.target.nodeName !== 'I') return;
   $deleteEntry.className = '';
   const currentEntry = event.target.closest('li').getAttribute('data-entry-id');
@@ -221,12 +222,20 @@ function reverseElements() {
 
 /* tag array setup */
 function setTags(tagString) {
-  const newTags = tagString.split(' ');
-  return newTags;
+  const newTags = tagString.replace(/\s\s+/g, ' ').split(' ');
+  const validTags = [];
+  newTags.forEach(tag => {
+    if (Boolean(tag) === true) {
+      validTags.push(tag);
+    }
+  });
+  return validTags;
 }
+
 /* tags line populating */
+/* To select specific tag: $entryList[0].querySelector('.tags').children[0].textContent */
 function showTags(tagElement, tagArray) {
-  if (tagArray !== undefined) {
+  if (tagArray !== undefined && tagArray.length > 0) {
     tagArray.forEach(tag => {
       const $tagSpan = document.createElement('a');
       $tagSpan.className = 'tag-link';

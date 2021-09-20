@@ -218,6 +218,21 @@ li {
   margin-left: 1.5rem;
 }
 
+.tags {
+  color: rgb(126, 126, 126);
+}
+
+.tag-link {
+  margin: 0.125rem 0.25rem;
+  padding: 0 0.25rem;
+  border-radius: 4px;
+  background-color: rgb(216, 216, 216);
+}
+
+.tag-link:hover {
+  background-color: rgb(228, 228, 228);
+}
+
 input:focus,
 textarea:focus,
 select:focus {

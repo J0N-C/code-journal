@@ -126,6 +126,7 @@ function submitForm(event) {
     filledForm.entryID = data.nextEntryId;
     filledForm.title = $form.title.value;
     filledForm.photourl = $form.photo.value;
+    filledForm.tags = setTags($form.tags.value);
     filledForm.notes = $form.notes.value;
     filledForm.date = currentDate();
     data.nextEntryId++;
@@ -137,11 +138,15 @@ function submitForm(event) {
     currentEntry = parseInt($form.getAttribute('data-view'));
     data.entries[currentEntry].title = $form.title.value;
     data.entries[currentEntry].photourl = $form.photo.value;
+    data.entries[currentEntry].tags = setTags($form.tags.value);
     data.entries[currentEntry].notes = $form.notes.value;
     const entryListIndex = $entryList.length - (currentEntry + 1); /* nodelist is reversed data array! */
     $entryList[entryListIndex].querySelector('h3').textContent = $form.title.value;
     $entryList[entryListIndex].querySelector('img').setAttribute('src', $form.photo.value);
     $entryList[entryListIndex].querySelector('p').textContent = $form.notes.value;
+    const $tagLine = $entryList[entryListIndex].querySelector('.tags');
+    $tagLine.textContent = 'Tags: ';
+    showTags($tagLine, data.entries[currentEntry].tags);
   }
   resetView();
   if (currentSort === 'asc') {
@@ -154,6 +159,7 @@ function submitForm(event) {
 
 /* edit entry DECLARE AFTER FUNCTION CREATES HTML */
 $viewEntries.addEventListener('click', function (event) {
+  $form.reset();
   if (event.target && event.target.nodeName !== 'I') return;
   $deleteEntry.className = '';
   const currentEntry = event.target.closest('li').getAttribute('data-entry-id');
@@ -164,6 +170,9 @@ $viewEntries.addEventListener('click', function (event) {
   $form.title.value = data.entries[currentEntry].title;
   $form.photo.value = data.entries[currentEntry].photourl;
   $form.notes.value = data.entries[currentEntry].notes;
+  if (data.entries[currentEntry].tags !== undefined) {
+    $form.tags.value = data.entries[currentEntry].tags.join(' ');
+  }
   $form.setAttribute('data-view', currentEntry);
 });
 
@@ -211,6 +220,35 @@ function reverseElements() {
   }
 }
 
+/* tag array setup */
+function setTags(tagString) {
+  const newTags = tagString.replace(/\s\s+/g, ' ').split(' ');
+  const validTags = [];
+  newTags.forEach(tag => {
+    if (Boolean(tag) === true) {
+      validTags.push(tag);
+    }
+  });
+  return validTags;
+}
+
+/* tags line populating */
+/* To select specific tag: $entryList[0].querySelector('.tags').children[0].textContent */
+function showTags(tagElement, tagArray) {
+  if (tagArray !== undefined && tagArray.length > 0) {
+    tagArray.forEach(tag => {
+      const $tagSpan = document.createElement('a');
+      $tagSpan.className = 'tag-link';
+      $tagSpan.textContent = tag;
+      tagElement.appendChild($tagSpan);
+    });
+  } else {
+    const $tagSpan = document.createElement('span');
+    $tagSpan.textContent = 'None';
+    tagElement.appendChild($tagSpan);
+  }
+}
+
 /* show all entries func */
 function showEntries() {
   if (data.entries.length === 0) {
@@ -243,10 +281,15 @@ function showEntries() {
     if (data.entries[entryCount].date !== undefined) {
       $dateEntered.textContent = `Date Created: ${(data.entries[entryCount].date[1]) + 1}-${data.entries[entryCount].date[2]}-${data.entries[entryCount].date[0]}`;
     }
+    const $tagLine = document.createElement('p');
+    $tagLine.className = 'tags row';
+    $tagLine.textContent = 'Tags: ';
+    showTags($tagLine, data.entries[entryCount].tags);
     $entryTitle.appendChild($title);
     $entryTitle.appendChild($editIcon);
     $entryText.appendChild($entryTitle);
     $entryText.appendChild($notes);
+    $entryText.appendChild($tagLine);
     $entryText.appendChild($dateEntered);
     $entryFrame.appendChild($image);
     $entryRow.appendChild($entryFrame);

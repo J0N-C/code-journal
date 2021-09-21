@@ -140,10 +140,12 @@ function submitForm(event) {
     data.entries[currentEntry].photourl = $form.photo.value;
     data.entries[currentEntry].tags = setTags($form.tags.value);
     data.entries[currentEntry].notes = $form.notes.value;
+    data.entries[currentEntry].editDate = currentDate();
     const entryListIndex = $entryList.length - (currentEntry + 1); /* nodelist is reversed data array! */
     $entryList[entryListIndex].querySelector('h3').textContent = $form.title.value;
     $entryList[entryListIndex].querySelector('img').setAttribute('src', $form.photo.value);
     $entryList[entryListIndex].querySelector('p').textContent = $form.notes.value;
+    $entryList[entryListIndex].querySelector('.date-of-edit').textContent = `Edited: ${(data.entries[currentEntry].editDate[1]) + 1}-${data.entries[currentEntry].editDate[2]}-${data.entries[currentEntry].editDate[0]}`;
     const $tagLine = $entryList[entryListIndex].querySelector('.tags');
     $tagLine.textContent = 'Tags: ';
     showTags($tagLine, data.entries[currentEntry].tags);
@@ -280,6 +282,13 @@ function showEntries() {
     $dateEntered.className = 'date-of-entry';
     if (data.entries[entryCount].date !== undefined) {
       $dateEntered.textContent = `Date Created: ${(data.entries[entryCount].date[1]) + 1}-${data.entries[entryCount].date[2]}-${data.entries[entryCount].date[0]}`;
+    } else {
+      $dateEntered.textContent = 'Date Created: NA';
+    }
+    const $dateEdited = document.createElement('p');
+    $dateEdited.className = 'date-of-edit';
+    if (data.entries[entryCount].editDate !== undefined) {
+      $dateEdited.textContent = `Edited: ${(data.entries[entryCount].editDate[1]) + 1}-${data.entries[entryCount].editDate[2]}-${data.entries[entryCount].editDate[0]}`;
     }
     const $tagLine = document.createElement('p');
     $tagLine.className = 'tags row';
@@ -291,6 +300,7 @@ function showEntries() {
     $entryText.appendChild($notes);
     $entryText.appendChild($tagLine);
     $entryText.appendChild($dateEntered);
+    $entryText.appendChild($dateEdited);
     $entryFrame.appendChild($image);
     $entryRow.appendChild($entryFrame);
     $entryRow.appendChild($entryText);

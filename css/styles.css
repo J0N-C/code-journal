@@ -169,9 +169,14 @@ li {
   margin: 0;
 }
 
-.date-of-entry {
+.date-of-entry,
+.date-of-edit {
   color: darkgray;
   text-align: right;
+}
+
+.date-of-edit {
+  font-style: italic;
 }
 
 .head-banner {

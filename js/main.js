@@ -111,7 +111,7 @@ $viewEntries.addEventListener('click', function (event) {
   if (event.target.className !== 'tag-link') return;
   resetView();
   $viewEntries.querySelector('h2').textContent = `Entries Tagged "${event.target.textContent}"`;
-  const currentTag = new RegExp(event.target.textContent, 'gi');
+  const currentTag = new RegExp(event.target.textContent, 'i');
   for (let i = 0; i < $entryList.length; i++) {
     const entryTags = $entryList[i].querySelector('.tags').children;
     for (let a = 0; a < entryTags.length; a++) {
@@ -121,6 +121,7 @@ $viewEntries.addEventListener('click', function (event) {
       }
     }
   }
+  $viewEntries.scrollIntoView();
 });
 
 /* photo preview func */

@@ -74,6 +74,7 @@ ul {
 
 li {
   margin-top: 1rem;
+  border-bottom: 1px solid lightgray;
 }
 
 #search {
@@ -235,6 +236,7 @@ li {
 }
 
 .tag-link:hover {
+  color: black;
   background-color: rgb(228, 228, 228);
 }
 

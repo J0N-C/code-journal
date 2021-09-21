@@ -245,7 +245,7 @@ select:focus {
   border: 3px solid rgb(73, 13, 129);
 }
 
-button:active {
+#new-entry:active {
   background-color: rgb(115, 34, 190);
 }
 

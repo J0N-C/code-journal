@@ -109,6 +109,7 @@ $sortOrder.addEventListener('change', function (event) {
 /* filter tag if clicked */
 $viewEntries.addEventListener('click', function (event) {
   if (event.target.className !== 'tag-link') return;
+  resetView();
   $viewEntries.querySelector('h2').textContent = `Entries Tagged "${event.target.textContent}"`;
   const currentTag = new RegExp(event.target.textContent, 'gi');
   for (let i = 0; i < $entryList.length; i++) {

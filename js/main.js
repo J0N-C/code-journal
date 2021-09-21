@@ -106,6 +106,22 @@ $sortOrder.addEventListener('change', function (event) {
   }
 });
 
+/* filter tag if clicked */
+$viewEntries.addEventListener('click', function (event) {
+  if (event.target.className !== 'tag-link') return;
+  $viewEntries.querySelector('h2').textContent = `Entries Tagged "${event.target.textContent}"`;
+  const currentTag = new RegExp(event.target.textContent, 'gi');
+  for (let i = 0; i < $entryList.length; i++) {
+    const entryTags = $entryList[i].querySelector('.tags').children;
+    for (let a = 0; a < entryTags.length; a++) {
+      if (currentTag.test(entryTags[a].textContent)) break;
+      if (a === entryTags.length - 1) {
+        $entryList[i].className = 'hidden';
+      }
+    }
+  }
+});
+
 /* photo preview func */
 function handleInput() {
   $photo.setAttribute('src', $photoUrl.value);
@@ -161,8 +177,8 @@ function submitForm(event) {
 
 /* edit entry DECLARE AFTER FUNCTION CREATES HTML */
 $viewEntries.addEventListener('click', function (event) {
-  $form.reset();
   if (event.target && event.target.nodeName !== 'I') return;
+  $form.reset();
   $deleteEntry.className = '';
   const currentEntry = event.target.closest('li').getAttribute('data-entry-id');
   $viewEntries.className = 'hidden';

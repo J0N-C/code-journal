@@ -106,6 +106,24 @@ $sortOrder.addEventListener('change', function (event) {
   }
 });
 
+/* filter tag if clicked */
+$viewEntries.addEventListener('click', function (event) {
+  if (event.target.className !== 'tag-link') return;
+  resetView();
+  $viewEntries.querySelector('h2').textContent = `Entries Tagged "${event.target.textContent}"`;
+  const currentTag = new RegExp(event.target.textContent, 'i');
+  for (let i = 0; i < $entryList.length; i++) {
+    const entryTags = $entryList[i].querySelector('.tags').children;
+    for (let a = 0; a < entryTags.length; a++) {
+      if (currentTag.test(entryTags[a].textContent)) break;
+      if (a === entryTags.length - 1) {
+        $entryList[i].className = 'hidden';
+      }
+    }
+  }
+  $viewEntries.scrollIntoView();
+});
+
 /* photo preview func */
 function handleInput() {
   $photo.setAttribute('src', $photoUrl.value);
@@ -140,10 +158,12 @@ function submitForm(event) {
     data.entries[currentEntry].photourl = $form.photo.value;
     data.entries[currentEntry].tags = setTags($form.tags.value);
     data.entries[currentEntry].notes = $form.notes.value;
+    data.entries[currentEntry].editDate = currentDate();
     const entryListIndex = $entryList.length - (currentEntry + 1); /* nodelist is reversed data array! */
     $entryList[entryListIndex].querySelector('h3').textContent = $form.title.value;
     $entryList[entryListIndex].querySelector('img').setAttribute('src', $form.photo.value);
     $entryList[entryListIndex].querySelector('p').textContent = $form.notes.value;
+    $entryList[entryListIndex].querySelector('.date-of-edit').textContent = `Edited: ${(data.entries[currentEntry].editDate[1]) + 1}-${data.entries[currentEntry].editDate[2]}-${data.entries[currentEntry].editDate[0]}`;
     const $tagLine = $entryList[entryListIndex].querySelector('.tags');
     $tagLine.textContent = 'Tags: ';
     showTags($tagLine, data.entries[currentEntry].tags);
@@ -159,8 +179,8 @@ function submitForm(event) {
 
 /* edit entry DECLARE AFTER FUNCTION CREATES HTML */
 $viewEntries.addEventListener('click', function (event) {
-  $form.reset();
   if (event.target && event.target.nodeName !== 'I') return;
+  $form.reset();
   $deleteEntry.className = '';
   const currentEntry = event.target.closest('li').getAttribute('data-entry-id');
   $viewEntries.className = 'hidden';
@@ -280,6 +300,13 @@ function showEntries() {
     $dateEntered.className = 'date-of-entry';
     if (data.entries[entryCount].date !== undefined) {
       $dateEntered.textContent = `Date Created: ${(data.entries[entryCount].date[1]) + 1}-${data.entries[entryCount].date[2]}-${data.entries[entryCount].date[0]}`;
+    } else {
+      $dateEntered.textContent = 'Date Created: NA';
+    }
+    const $dateEdited = document.createElement('p');
+    $dateEdited.className = 'date-of-edit';
+    if (data.entries[entryCount].editDate !== undefined) {
+      $dateEdited.textContent = `Edited: ${(data.entries[entryCount].editDate[1]) + 1}-${data.entries[entryCount].editDate[2]}-${data.entries[entryCount].editDate[0]}`;
     }
     const $tagLine = document.createElement('p');
     $tagLine.className = 'tags row';
@@ -291,6 +318,7 @@ function showEntries() {
     $entryText.appendChild($notes);
     $entryText.appendChild($tagLine);
     $entryText.appendChild($dateEntered);
+    $entryText.appendChild($dateEdited);
     $entryFrame.appendChild($image);
     $entryRow.appendChild($entryFrame);
     $entryRow.appendChild($entryText);
